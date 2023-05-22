@@ -13,7 +13,6 @@ function Clients() {
       {!loading && !error && (
         <table className="table table-hover mt-3">
           <thead>
-            <h1>Clients</h1>
             <tr>
               <th>Name</th>
               <th>Email</th>
