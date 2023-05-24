@@ -3,6 +3,8 @@ import Spinner from "../components/Spinner";
 import { useQuery } from "@apollo/client";
 import { GET_PROJECT } from "../queries/projectQueries";
 import ClientInfo from "../components/ClientInfo";
+import DeleteProjectButton from "../components/DeleteProjectButton";
+import EditProjectForm from "../components/EditProjectForm";
 
 function Project() {
   const { id } = useParams();
@@ -15,7 +17,6 @@ function Project() {
 
   if (loading) return <Spinner />;
   if (error) return <p>Something Went Wrong</p>;
-  console.log("Data:", data);
   return (
     <>
       {!loading && !error && (
@@ -28,6 +29,8 @@ function Project() {
           <h5 className="mt-3">Project Status</h5>
           <p className="lead">{data.project.status}</p>
           <ClientInfo client={data.project.client} />
+          <EditProjectForm project={data.project} />
+          <DeleteProjectButton id={data.project.id} />
         </div>
       )}
     </>

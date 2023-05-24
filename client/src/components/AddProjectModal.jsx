@@ -4,7 +4,6 @@ import { ADD_PROJECT } from "../mutations/projectMutations";
 import { GET_PROJECTS } from "../queries/projectQueries";
 import { GET_CLIENTS } from "../queries/clientQueries";
 import { useMutation, useQuery } from "@apollo/client";
-import Spinner from "./Spinner";
 
 function AddProjectModal() {
   const [name, setName] = useState("");
@@ -15,15 +14,9 @@ function AddProjectModal() {
   const { loading, error, data } = useQuery(GET_CLIENTS);
 
   const [addProject] = useMutation(ADD_PROJECT, {
-    variables: {
-      name,
-      description,
-      status,
-    },
+    variables: { name, description, clientId, status },
     update(cache, { data: { addProject } }) {
-      const { projects } = cache.readQuery({
-        query: GET_PROJECTS,
-      });
+      const { projects } = cache.readQuery({ query: GET_PROJECTS });
       cache.writeQuery({
         query: GET_PROJECTS,
         data: { projects: [...projects, addProject] },
@@ -36,10 +29,10 @@ function AddProjectModal() {
     if (name === "" || description === "" || status === "" || clientId === "") {
       return alert("Please fill in all fields");
     }
-    addProject(name, description, status, clientId);
+    addProject(name, description, clientId, status);
     setName("");
     setDescription("");
-    setStatus("");
+    setStatus("new");
     setClientId("");
   };
 
